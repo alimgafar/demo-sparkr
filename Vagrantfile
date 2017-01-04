@@ -103,6 +103,7 @@ chmod 755 gradlew*
 echo "Downloading and installing R..."
 #Add R repository to sources.list
 sudo echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
+sudo chown -R vagrant:vagrant /etc/apt/sources.list
 
 #Add R to the Ubuntu keyring
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 
