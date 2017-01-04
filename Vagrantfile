@@ -100,6 +100,17 @@ cd MongoDB_Spark_Course
 chmod 755 gradlew*
 ./gradlew jar
 
+echo "Downloading and installing R..."
+#Add R repository to sources.list
+sudo echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/“ | sudo tee -a /etc/apt/sources.list
+
+#Add R to the Ubuntu keyring
+gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 
+gpg -a --export E084DAB9 | sudo apt-key add -
+
+#Install R-base
+sudo apt-get update && sudo apt-get install r-base r-base-dev
+
 echo "Loading dataset"
 cd
 wget https://data.nasa.gov/api/views/9kcy-zwvn/rows.csv?accessType=DOWNLOAD -O eva.csv
