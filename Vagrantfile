@@ -116,6 +116,12 @@ cd
 wget https://data.nasa.gov/api/views/9kcy-zwvn/rows.csv?accessType=DOWNLOAD -O eva.csv
 mongoimport --headerline --file eva.csv --type csv --db nasa --collection eva
 
+#import the sample data into MongoDB
+wget https://raw.githubusercontent.com/alimgafar/demo-sparkr/master/mongodb_chapters.csv -O chapters.csv
+mongoimport -d meetup -c chapters --headerline --type csv --drop --file chapters.csv
+
+
+
 SCRIPT
 
 config.vm.provision "shell", inline: $script
