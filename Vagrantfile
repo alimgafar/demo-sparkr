@@ -88,41 +88,6 @@ sudo echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true
 apt-get -y -q install oracle-java8-installer
 update-java-alternatives -s java-8-oracle
 
-echo "Downloading Spark..."
-wget -q http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz -O spark-1.6.1.tgz
-tar -xzf spark-1.6.1.tgz && mv spark-1.6.1-bin-hadoop2.6 spark-1.6.1
-sudo chown -R vagrant:vagrant spark-1.6.1
-
-echo "Downloading and building course examples..."
-git clone https://github.com/breinero/MongoDB_Spark_Course.git
-sudo chown -R vagrant:vagrant MongoDB_Spark_Course
-cd MongoDB_Spark_Course
-chmod 755 gradlew*
-./gradlew jar
-
-echo "Downloading and installing R..."
-#Add R repository to sources.list
-sudo echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
-sudo chown -R vagrant:vagrant /etc/apt/sources.list
-
-#Add R to the Ubuntu keyring
-gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 
-gpg -a --export E084DAB9 | sudo apt-key add -
-
-#Install R-base
-sudo apt-get update && sudo apt-get install r-base r-base-dev
-
-echo "Loading dataset"
-cd
-wget https://data.nasa.gov/api/views/9kcy-zwvn/rows.csv?accessType=DOWNLOAD -O eva.csv
-mongoimport --headerline --file eva.csv --type csv --db nasa --collection eva
-
-#import the sample data into MongoDB
-wget https://raw.githubusercontent.com/alimgafar/demo-sparkr/master/mongodb_chapters.csv -O chapters.csv
-mongoimport -d meetup -c chapters --headerline --type csv --drop --file chapters.csv
-
-
-
 SCRIPT
 
 config.vm.provision "shell", inline: $script
