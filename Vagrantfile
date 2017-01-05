@@ -73,32 +73,29 @@ $script = <<SCRIPT
 echo I am provisioning...
 date > /etc/vagrant_provisioned_at
 sudo apt-get update
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 
 echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
 
-add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+add-apt-repository -y ppa:webupd8team/java
 
 sudo apt-get update
-sudo apt-get install -y mongodb-org git sbt
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 
-sudo echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-apt-get -y -q install oracle-java8-installer
-update-java-alternatives -s java-8-oracle
+sudo apt-get -f -y install mongodb-org git sbt
+
+#sudo echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+#apt-get -y -q install oracle-java8-installer
+#update-java-alternatives -s java-8-oracle
 
 echo "Downloading Spark..."
-wget -q http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz -O spark-1.6.1.tgz
-tar -xzf spark-1.6.1.tgz && mv spark-1.6.1-bin-hadoop2.6 spark-1.6.1
-sudo chown -R vagrant:vagrant spark-1.6.1
-
-echo "Downloading and building course examples..."
-git clone https://github.com/breinero/MongoDB_Spark_Course.git
-sudo chown -R vagrant:vagrant MongoDB_Spark_Course
-cd MongoDB_Spark_Course
-chmod 755 gradlew*
-./gradlew jar
+wget -q http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz -O spark-2.1.0.tgz
+tar -xzf spark-2.1.0.tgz && mv spark-2.1.0-bin-hadoop2.7 spark-2.1.0
+sudo chown -R vagrant:vagrant spark-2.1.0
 
 echo "Downloading and installing R..."
 #Add R repository to sources.list
@@ -113,15 +110,13 @@ gpg -a --export E084DAB9 | sudo apt-key add -
 sudo apt-get update && sudo apt-get install r-base r-base-dev
 
 echo "Loading dataset"
-cd
+#cd
 wget https://data.nasa.gov/api/views/9kcy-zwvn/rows.csv?accessType=DOWNLOAD -O eva.csv
 mongoimport --headerline --file eva.csv --type csv --db nasa --collection eva
 
 #import the sample data into MongoDB
 wget https://raw.githubusercontent.com/alimgafar/demo-sparkr/master/mongodb_chapters.csv -O chapters.csv
 mongoimport -d meetup -c chapters --headerline --type csv --drop --file chapters.csv
-
-
 
 SCRIPT
 
