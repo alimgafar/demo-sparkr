@@ -86,11 +86,11 @@ sudo apt-get update
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 
-sudo apt-get -f -y install mongodb-org git sbt
+sudo echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+sudo apt-get -y -q install oracle-java8-installer
+sudo update-java-alternatives -s java-8-oracle
 
-#sudo echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-#apt-get -y -q install oracle-java8-installer
-#update-java-alternatives -s java-8-oracle
+sudo apt-get -f -y install mongodb-org git sbt
 
 echo "Downloading Spark..."
 wget -q http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz -O spark-2.1.0.tgz
