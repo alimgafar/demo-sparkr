@@ -92,20 +92,23 @@ sudo update-java-alternatives -s java-8-oracle
 
 sudo apt-get -f -y install mongodb-org git sbt
 
+#There are problems starting up Spark 2.1.0 shell today; the MongoDB libraries don't load; removing until problem is debugged. 
+#Spark 2.1.0
+#echo "Downloading Spark..."
+#wget -q http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz -O spark-2.1.0.tgz
+#tar -xzf spark-2.1.0.tgz && mv spark-2.1.0-bin-hadoop2.7 spark-2.1.0
+#sudo chown -R vagrant:vagrant spark-2.1.0
+
+# Spark 1.6.1
 echo "Downloading Spark..."
-wget -q http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz -O spark-2.1.0.tgz
-tar -xzf spark-2.1.0.tgz && mv spark-2.1.0-bin-hadoop2.7 spark-2.1.0
-sudo chown -R vagrant:vagrant spark-2.1.0
+wget -q http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz -O spark-1.6.1.tgz
+tar -xzf spark-1.6.1.tgz && mv spark-1.6.1-bin-hadoop2.6 spark-1.6.1
+sudo chown -R vagrant:vagrant spark-1.6.1
 
 echo "Downloading and installing R..."
 #Add R repository to sources.list
 sudo echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
 sudo chown -R vagrant:vagrant /etc/apt/sources.list
-
-echo "Downloading Spark..."
-wget -q http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz -O spark-1.6.1.tgz
-tar -xzf spark-1.6.1.tgz && mv spark-1.6.1-bin-hadoop2.6 spark-1.6.1
-sudo chown -R vagrant:vagrant spark-1.6.1
 
 #Add R to the Ubuntu keyring
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 
