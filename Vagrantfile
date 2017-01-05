@@ -102,6 +102,11 @@ echo "Downloading and installing R..."
 sudo echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
 sudo chown -R vagrant:vagrant /etc/apt/sources.list
 
+echo "Downloading Spark..."
+wget -q http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz -O spark-1.6.1.tgz
+tar -xzf spark-1.6.1.tgz && mv spark-1.6.1-bin-hadoop2.6 spark-1.6.1
+sudo chown -R vagrant:vagrant spark-1.6.1
+
 #Add R to the Ubuntu keyring
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 
 gpg -a --export E084DAB9 | sudo apt-key add -
